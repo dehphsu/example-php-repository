@@ -235,9 +235,9 @@
          Start a PHP server to view the outputs                
          ============================================  -->    
     <target name="server" description="Start a PHP server to view the outputs">
-    	<echo message="View the output at http://localhost:8000 ${builddir}" />
+    	<echo message="View the output at http://localhost:8000 " />
     	<echo message="Press Ctrl-C to quit" />
-        <exec command="php -S localhost:8000 -t ${builddir}" />
+        <exec command="php -S localhost:8000 -t ${builddir} ${builddir}/router.php" />
     </target>
 
 </project>
