@@ -8,6 +8,7 @@ Useful commands
 ---------------
 
 `phing -l` will display all the possible phing targets
+
     Default target:
     -------------------------------------------------------------------------------
      build
