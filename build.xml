@@ -2,11 +2,12 @@
 
 <project name="example-php-repository" default="build" basedir=".">
     <property name="basedir" value="." />
-
+	<!-- Build directory -->
+    <property name="builddir" value="${basedir}/build" />
     <!-- Web pages -->
-    <property name="httpdocs" value="httpdocs" />
+    <property name="httpdocs" value="${basedir}/httpdocs" />
     <!-- php classes -->
-    <property name="classes" value="classes" />
+    <property name="classes" value="${basedir}/classes" />
     
     <!-- The name of the php codesniffer standard or the location of the ruleset.xml to use -->
     <property name="CodeSnifferStandard" value="../libraries/FPClassLib/ruleset.xml" />
@@ -20,11 +21,11 @@
          Target: clean                                 
          ============================================  -->
     <target name="clean" description="Clean up artifact directories">
-        <delete dir="${basedir}/build/api" />
-        <delete dir="${basedir}/build/code-browser" />
-        <delete dir="${basedir}/build/coverage" />
-        <delete dir="${basedir}/build/logs" />
-        <delete dir="${basedir}/build/pdepend" />
+        <delete dir="${builddir}/api" />
+        <delete dir="${builddir}/code-browser" />
+        <delete dir="${builddir}/coverage" />
+        <delete dir="${builddir}/logs" />
+        <delete dir="${builddir}/pdepend" />
     </target>
 
     <!-- ============================================  
@@ -33,11 +34,11 @@
          to run goes here                              
          ============================================  -->
     <target name="prepare" description="Create artifact directories">
-        <mkdir dir="${basedir}/build/api" />
-        <mkdir dir="${basedir}/build/code-browser" />
-        <mkdir dir="${basedir}/build/coverage" />
-        <mkdir dir="${basedir}/build/logs" />
-        <mkdir dir="${basedir}/build/pdepend" />
+        <mkdir dir="${builddir}/api" />
+        <mkdir dir="${builddir}/code-browser" />
+        <mkdir dir="${builddir}/coverage" />
+        <mkdir dir="${builddir}/logs" />
+        <mkdir dir="${builddir}/pdepend" />
 
         <!--<symlink target="./config.dev.inc.php" link="${basedir}/conf/config.inc.php" overwrite="true" />-->
     </target>
@@ -50,9 +51,9 @@
          ============================================  -->
     <target name="phpcpd" description="Find duplicate code using PHPCPD">
         <phpcpd>
-            <fileset dir="${basedir}/${classes}" id="classes" />
-            <fileset dir="${basedir}/${httpdocs}" id="httpdocs" />
-            <formatter type="pmd" outfile="${basedir}/build/logs/pmd-cpd.xml" />
+            <fileset dir="${classes}" id="classes" />
+            <fileset dir="${httpdocs}" id="httpdocs" />
+            <formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml" />
         </phpcpd>
     </target>
 
@@ -94,7 +95,7 @@
         <phpmd rulesets="codesize,design,naming,unusedcode">
             <fileset dir="${httpdocs}" />
             <fileset dir="${classes}" />
-            <formatter type="xml" outfile="${basedir}/build/logs/pmd.xml" />
+            <formatter type="xml" outfile="${builddir}/logs/pmd.xml" />
         </phpmd>
     </target>
 
@@ -105,7 +106,7 @@
          https://github.com/sebastianbergmann/phploc              
          =======================================================  -->   
     <target name="phploc" description="Generate phploc.csv">
-        <exec command="phploc --log-csv ${basedir}/build/logs/phploc.csv ${httpdocs}" />
+        <exec command="phploc --log-csv ${builddir}/logs/phploc.csv ${httpdocs}" />
     </target>
 
     <!-- ============================================  
@@ -137,7 +138,7 @@
         <phpcodesniffer standard="${CodeSnifferStandard}">
             <fileset dir="${httpdocs}" />
             <fileset dir="${classes}" />
-            <formatter type="checkstyle" outfile="${basedir}/build/logs/checkstyle.xml" />
+            <formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml" />
         </phpcodesniffer>
     </target>
 
@@ -149,7 +150,7 @@
          http://www.phpdoc.org/                        
          ============================================  -->
     <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
-        <phpdoc2 destdir="${basedir}/build/api">
+        <phpdoc2 destdir="${builddir}/api">
             <fileset dir="${httpdocs}" />
             <fileset dir="${classes}" />
         </phpdoc2>
@@ -167,9 +168,9 @@
          ==============================================  -->
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
         <exec
-            command="phpcb --log ${basedir}/build/logs
+            command="phpcb --log ${builddir}/logs
               --source ${httpdocs} --source ${classes}
-              --output ${basedir}/build/code-browser " />
+              --output ${builddir}/code-browser " />
     </target>
 
     <!-- ============================================  
@@ -189,9 +190,9 @@
                 <include name="httpdocs/**" />
                 <include name="classes/**" />
             </fileset>
-            <logger type="jdepend-xml" outfile="${basedir}/build/logs/jdepend.xml" />
-            <logger type="jdepend-chart" outfile="${basedir}/build/pdepend/dependencies.svg" />
-            <logger type="overview-pyramid" outfile="${basedir}/build/pdepend/overview-pyramid.svg" />
+            <logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
             <analyzer type="coderank-mode" value="method" />
         </phpdepend>
     </target>
