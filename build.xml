@@ -51,8 +51,8 @@
          ============================================  -->
     <target name="phpcpd" description="Find duplicate code using PHPCPD">
         <phpcpd>
-            <fileset dir="${classes}" id="classes" />
-            <fileset dir="${httpdocs}" id="httpdocs" />
+            <fileset dir="${classes}" />
+            <fileset dir="${httpdocs}" />
             <formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml" />
         </phpcpd>
     </target>
@@ -186,10 +186,8 @@
          ============================================  -->
     <target name="phpdepend" description="Calculate software metrics using PHP_Depend">
         <phpdepend>
-            <fileset dir="${basedir}">
-                <include name="httpdocs/**" />
-                <include name="classes/**" />
-            </fileset>
+            <fileset dir="${httpdocs}" />
+            <fileset dir="${classes}" />
             <logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
             <logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
             <logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
@@ -229,6 +227,17 @@
          ============================================  -->    
     <target name="update-live">
         <exec command="${basedir}/scripts/push-to-test.sh -m live" />
+    </target>
+	
+    <!-- ============================================  
+         Target: server                           
+                                                          
+         Start a PHP server to view the outputs                
+         ============================================  -->    
+    <target name="server" description="Start a PHP server to view the outputs">
+    	<echo message="View the output at http://localhost:8000 ${builddir}" />
+    	<echo message="Press Ctrl-C to quit" />
+        <exec command="php -S localhost:8000 -t ${builddir}" />
     </target>
 
 </project>
