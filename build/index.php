@@ -41,6 +41,16 @@ $strTitle = basename(dirname(__DIR__));
                 </tr>
             </tbody>
         </table>
+
+        <div id="checkstyle">
+            <h2>Checkstyle</h2>
+            <pre><?php
+            if (file_exists('logs/full.txt')){
+                readfile('logs/full.txt');
+            }
+            ?>
+            </pre>
+        </div>
     </div>
 
 </body>

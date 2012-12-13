@@ -135,10 +135,11 @@
          ============================================  -->  
     <target name="phpcs-ci" 
         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-        <phpcodesniffer standard="${CodeSnifferStandard}">
+        <phpcodesniffer standard="${CodeSnifferStandard}" reportWidth="114">
             <fileset dir="${httpdocs}" />
             <fileset dir="${classes}" />
             <formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml" />
+            <formatter type="full" outfile="${builddir}/logs/full.txt" />
         </phpcodesniffer>
     </target>
 
