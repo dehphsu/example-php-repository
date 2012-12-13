@@ -10,7 +10,7 @@
     <property name="classes" value="${basedir}/classes" />
     
     <!-- The name of the php codesniffer standard or the location of the ruleset.xml to use -->
-    <property name="CodeSnifferStandard" value="../libraries/FPClassLib/ruleset.xml" />
+    <property name="CodeSnifferStandard" value="ruleset.xml" />
     
     <!-- ============================================  
          (DEFAULT) Target: build                       

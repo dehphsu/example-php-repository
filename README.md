@@ -28,6 +28,7 @@ Useful commands
      phpmd          Generate pmd.xml using PHPMD
      phpunit        Run unit tests using PHPUnit and generates junit.xml and clover.xml
      prepare        Create artifact directories
+     server         Start a PHP server to view the outputs
     
     Subtargets:
     -------------------------------------------------------------------------------
