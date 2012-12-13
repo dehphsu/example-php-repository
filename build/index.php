@@ -1,15 +1,17 @@
 <?php
 $strTitle = basename(dirname(__DIR__));
+
+$color = substr(dechex(crc32($strTitle)), 0, 6);
 ?>
 <html>
 <head>
 <title><?= $strTitle?></title>
 </head>
 <body
-    style="height: 100%; margin: 0; background-color: #ddd; background: radial-gradient(at center center, rgba(255, 255, 255, 0.1), rgba(55, 55, 55, 0.2) ) repeat scroll 0 0 transparent;">
+    style="height: 100%; margin: 0; background-color: #<?= $color;?>; background: radial-gradient(at center center, #<?= $color;?>, rgba(255, 255, 255, .1) ) repeat scroll 0 0 transparent;">
 
     <div id="main"
-        style="margin-top: 8px; border: 6px double #ddd; width: 800px; margin-left: auto; margin-right: auto; background-color: #fff; padding: 0 20px; font-family: ubuntu, helvetica, sans-serif;">
+        style="margin-top: 8px; border: 6px double #<?= $color;?>; width: 800px; margin-left: auto; margin-right: auto; background-color: #fff; padding: 0 20px; font-family: ubuntu, helvetica, sans-serif;">
         <h1 style="text-shadow: 2px 2px 0 #ddd;">
             <?= $strTitle?>
         </h1>
