@@ -1,7 +1,7 @@
 <?php
 $strTitle = basename(dirname(__DIR__));
 
-$color = substr(dechex(crc32($strTitle)), 0, 6);
+$color = substr(dechex(crc32(/*time().*/$strTitle)), 0, 6);
 
 ?>
 <html>

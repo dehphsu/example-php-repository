@@ -2,6 +2,8 @@
 /**
  * Example class
  */
+namespace examplePhpRepository;
+
 class Example
 {
 
