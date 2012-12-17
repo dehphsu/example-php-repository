@@ -7,8 +7,13 @@
     <!-- Web pages -->
     <property name="httpdocs" value="${basedir}/httpdocs" />
     <!-- php classes -->
+	<!-- Could be called src, code, vendor etc -->
     <property name="classes" value="${basedir}/classes" />
     
+	<!-- Any bits of code to be excluded from code sniffing, depend. 
+	     Maybe 3rd party libs that would cause your code to fail -->
+	<property name="3rdPartyLibs" value="${basedir}/classes/3rdParty" />
+	
     <!-- The name of the php codesniffer standard or the location of the ruleset.xml to use -->
     <property name="CodeSnifferStandard" value="ruleset.xml" />
     
@@ -45,21 +50,23 @@
 
     <!-- ============================================  
          Target: phpcpd                                
-                                                           
+                                                       
          Copy/Paste Detector (CPD) for PHP code        
          https://github.com/sebastianbergmann/phpcpd   
          ============================================  -->
     <target name="phpcpd" description="Find duplicate code using PHPCPD">
         <phpcpd>
-            <fileset dir="${classes}" />
             <fileset dir="${httpdocs}" />
+            <fileset dir="${classes}">
+            	<exclude name="3rdPartyLibs/" />
+            </fileset>
             <formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml" />
         </phpcpd>
     </target>
 
     <!-- ============================================  
          Target: phpunit                               
-                                                           
+                                                       
          The PHP Unit Testing framework                
          https://github.com/sebastianbergmann/phpunit/ 
          ============================================  -->         

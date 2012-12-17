@@ -32,8 +32,9 @@ class ExampleTest extends PHPUnit_Framework_TestCase
      */
     public function testSetIntNumberOne()
     {
+        $this->assertNull($this->object->intNumberOne);
+
         $this->object->setIntNumberOne(1);
         $this->assertEquals(1, $this->object->intNumberOne);
-      #  $this->assertEquals(1, 0);
     }
 }
