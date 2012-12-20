@@ -9,7 +9,7 @@ $color = substr(dechex(crc32(/*time().*/$strTitle)), 0, 6);
 <title><?= $strTitle?></title>
 </head>
 <body
-    style="height: 100%; margin: 0; background-color: #<?= $color;?>; background: radial-gradient(at center center, #<?= $color;?>, rgba(255, 255, 255, .1) ) repeat scroll 0 0 transparent;">
+    style="height: 100%; margin: 0; background-color: #<?= $color;?>; background: radial-gradient(at center center, #<?= $color;?>, rgba(255, 255, 255, .1) ) no-repeat fixed 0 0 transparent;">
 
     <div id="main"
         style="margin-bottom: 8px; margin-top: 8px; border: 6px double #<?= $color;?>; width: 800px; margin-left: auto; margin-right: auto; background-color: #fff; padding: 0 20px; font-family: ubuntu, helvetica, sans-serif;">
