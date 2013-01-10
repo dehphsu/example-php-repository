@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="example-php-repository" default="build" basedir=".">
-	
-    <!-- =======================================================  
-         Variables                                   
-         =======================================================  -->	
+
+    <!-- =======================================================
+         Variables
+         =======================================================  -->
     <property name="basedir" value="." />
 	<!-- Build directory -->
     <property name="builddir" value="${basedir}/build" />
@@ -13,21 +13,21 @@
     <!-- php classes -->
 	<!-- Could be called src, code, vendor etc -->
     <property name="classes" value="${basedir}/classes" />
-    
-	<!-- Any bits of code to be excluded from code sniffing, depend. 
+
+	<!-- Any bits of code to be excluded from code sniffing, depend.
 	     Maybe 3rd party libs that would cause your code to fail -->
 	<property name="3rdPartyLibs" value="${basedir}/classes/3rdParty" />
-	
+
     <!-- The name of the php codesniffer standard or the location of the ruleset.xml to use -->
     <property name="CodeSnifferStandard" value="ruleset.xml" />
-    
-    <!-- =======================================================  
-         (DEFAULT) Target: build                       
+
+    <!-- =======================================================
+         (DEFAULT) Target: build
          =======================================================  -->
     <target name="build" depends="clean,prepare,parallelTasks,phpunit,phpcb,phpcpd" />
 
-    <!-- =======================================================  
-         Target: clean                                 
+    <!-- =======================================================
+         Target: clean
          =======================================================  -->
     <target name="clean" description="Clean up artifact directories">
         <delete dir="${builddir}/api" />
@@ -37,10 +37,10 @@
         <delete dir="${builddir}/pdepend" />
     </target>
 
-    <!-- =======================================================  
-         Target: prepare                               
-         Any setup to allow the other phing targets    
-         to run goes here                              
+    <!-- =======================================================
+         Target: prepare
+         Any setup to allow the other phing targets
+         to run goes here
          =======================================================  -->
     <target name="prepare" description="Create artifact directories">
         <mkdir dir="${builddir}/api" />
@@ -52,11 +52,11 @@
         <!--<symlink target="./config.dev.inc.php" link="${basedir}/conf/config.inc.php" overwrite="true" />-->
     </target>
 
-    <!-- =======================================================  
-         Target: phpcpd                                
-                                                       
-         Copy/Paste Detector (CPD) for PHP code        
-         https://github.com/sebastianbergmann/phpcpd   
+    <!-- =======================================================
+         Target: phpcpd
+
+         Copy/Paste Detector (CPD) for PHP code
+         https://github.com/sebastianbergmann/phpcpd
          =======================================================  -->
     <target name="phpcpd" description="Find duplicate code using PHPCPD">
         <phpcpd>
@@ -68,22 +68,22 @@
         </phpcpd>
     </target>
 
-    <!-- =======================================================  
-         Target: phpunit                               
-                                                       
-         The PHP Unit Testing framework                
-         https://github.com/sebastianbergmann/phpunit/ 
-         =======================================================  -->         
-    <target name="phpunit" 
+    <!-- =======================================================
+         Target: phpunit
+
+         The PHP Unit Testing framework
+         https://github.com/sebastianbergmann/phpunit/
+         =======================================================  -->
+    <target name="phpunit"
         description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
-        <exec command="phpunit -c ${basedir}/tests/phpunit.xml tests" 
+        <exec command="phpunit -c ${basedir}/tests/phpunit.xml tests"
             checkreturn="FALSE" passthru="true" />
     </target>
 
-    <!-- =======================================================  
-         Target: parallelTasks                         
-         =======================================================  -->   
-    <target name="parallelTasks" 
+    <!-- =======================================================
+         Target: parallelTasks
+         =======================================================  -->
+    <target name="parallelTasks"
         description="Run the phpmd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
         <parallel threadCount="2">
             <phingcall target="lint" />
@@ -96,12 +96,12 @@
         </parallel>
     </target>
 
-    <!-- =======================================================  
-         Target: phpmd                                 
-                                                       
-         PHP Mess Detector                             
-         http://phpmd.org/                             
-         =======================================================  -->   
+    <!-- =======================================================
+         Target: phpmd
+
+         PHP Mess Detector
+         http://phpmd.org/
+         =======================================================  -->
     <target name="phpmd" description="Generate pmd.xml using PHPMD">
         <phpmd rulesets="codesize,design,naming,unusedcode">
             <fileset dir="${httpdocs}" />
@@ -110,25 +110,25 @@
         </phpmd>
     </target>
 
-    <!-- ==================================================================  
-         Target: phploc                                           
-                                                                  
-         A tool for quickly measuring the size of a PHP project   
-         https://github.com/sebastianbergmann/phploc              
-         ==================================================================  -->   
+    <!-- ==================================================================
+         Target: phploc
+
+         A tool for quickly measuring the size of a PHP project
+         https://github.com/sebastianbergmann/phploc
+         ==================================================================  -->
     <target name="phploc" description="Generate phploc.csv">
         <exec command="phploc --log-csv ${builddir}/logs/phploc.csv ${httpdocs}" />
     </target>
 
-    <!-- =======================================================  
-         Target: phpcs                                 
-                                                       
-         PHP_CodeSniffer tokenises PHP, JavaScript     
-         and CSS files and detects violations of a     
-         defined set of coding standards.              
-         Human readable output                         
-         =======================================================  -->  
-    <target name="phpcs" 
+    <!-- =======================================================
+         Target: phpcs
+
+         PHP_CodeSniffer tokenises PHP, JavaScript
+         and CSS files and detects violations of a
+         defined set of coding standards.
+         Human readable output
+         =======================================================  -->
+    <target name="phpcs"
         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <phpcodesniffer standard="${CodeSnifferStandard}">
             <fileset dir="${httpdocs}" />
@@ -136,15 +136,15 @@
         </phpcodesniffer>
     </target>
 
-    <!-- =======================================================  
-         Target: phpcs-ci                              
-                                                       
-         PHP_CodeSniffer tokenises PHP, JavaScript     
-         and CSS files and detects violations of a     
-         defined set of coding standards.              
-         machine readable output                       
-         =======================================================  -->  
-    <target name="phpcs-ci" 
+    <!-- =======================================================
+         Target: phpcs-ci
+
+         PHP_CodeSniffer tokenises PHP, JavaScript
+         and CSS files and detects violations of a
+         defined set of coding standards.
+         machine readable output
+         =======================================================  -->
+    <target name="phpcs-ci"
         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
         <phpcodesniffer standard="${CodeSnifferStandard}" reportWidth="114">
             <fileset dir="${httpdocs}" />
@@ -154,12 +154,12 @@
         </phpcodesniffer>
     </target>
 
-    <!-- =======================================================  
-         Target: phpdoc                                
-                                                       
-         phpDocumentor                                 
-         Documentation Generator for PHP               
-         http://www.phpdoc.org/                        
+    <!-- =======================================================
+         Target: phpdoc
+
+         phpDocumentor
+         Documentation Generator for PHP
+         http://www.phpdoc.org/
          =======================================================  -->
     <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
         <phpdoc2 destdir="${builddir}/api">
@@ -168,15 +168,15 @@
         </phpdoc2>
     </target>
 
-    <!-- =========================================================  
-         Target: phpcb                                   
-                                                         
-         PHP_CodeBrowser                                 
-         https://github.com/Mayflower/PHP_CodeBrowser    
-         Generates a browsable representation of PHP     
-         code where sections with violations found by    
-         quality assurance tools such as PHP_CodeSniffer 
-         or PHPMD are highlighted                            
+    <!-- =========================================================
+         Target: phpcb
+
+         PHP_CodeBrowser
+         https://github.com/Mayflower/PHP_CodeBrowser
+         Generates a browsable representation of PHP
+         code where sections with violations found by
+         quality assurance tools such as PHP_CodeSniffer
+         or PHPMD are highlighted
          =========================================================  -->
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
         <exec
@@ -184,17 +184,17 @@
               --source ${httpdocs} --source ${classes}
               --output ${builddir}/code-browser " />
     </target>
-	
-    <!-- =======================================================  
-         Target: phpdepend                             
-                                                       
-         http://pdepend.org/                           
-         pdepend can generate a large set of software  
-         metrics from a given code base. These values  
-         can be used to measure the quality of a       
-         software project and they help to identify    
-         the parts of an application where a code      
-         refactoring should be applied.                   
+
+    <!-- =======================================================
+         Target: phpdepend
+
+         http://pdepend.org/
+         pdepend can generate a large set of software
+         metrics from a given code base. These values
+         can be used to measure the quality of a
+         software project and they help to identify
+         the parts of an application where a code
+         refactoring should be applied.
          =======================================================  -->
     <target name="phpdepend" description="Calculate software metrics using PHP_Depend">
         <phpdepend>
@@ -207,10 +207,10 @@
         </phpdepend>
     </target>
 
-    <!-- =======================================================  
-         Target: lint                                  
-                                                           
-         SImple php syntax check                           
+    <!-- =======================================================
+         Target: lint
+
+         SImple php syntax check
          =======================================================  -->
     <target name="lint" description="Perform syntax check of httpdocscode files">
         <phplint>
@@ -223,40 +223,40 @@
         </phplint>
     </target>
 
-    <!-- =======================================================  
-         Target: update-test                           
-                                                       
-         Upload the code to the test site              
+    <!-- =======================================================
+         Target: update-test
+
+         Upload the code to the test site
          =======================================================  -->
     <target name="update-test">
         <exec command="${basedir}/scripts/push-to-test.sh -m test" />
     </target>
 
-    <!-- =======================================================  
-         Target: update-live                           
-                                                       
-         Upload the code to the live site              
+    <!-- =======================================================
+         Target: update-live
+
+         Upload the code to the live site
          =======================================================  -->
     <target name="update-live">
         <exec command="${basedir}/scripts/push-to-test.sh -m live" />
     </target>
-	
-    <!-- =======================================================  
-         Target: server                                
-                                                       
-         Start a PHP server to view the code        
-         =======================================================  -->    
+
+    <!-- =======================================================
+         Target: server
+
+         Start a PHP server to view the code
+         =======================================================  -->
     <target name="server" description="Start a PHP server to view the outputs">
     	<echo message="View the output at http://localhost:8000 " />
     	<echo message="Press Ctrl-C to quit" />
         <exec command="php -S localhost:8000 -t ${httpdocs} " />
     </target>
-	
-    <!-- =======================================================  
-         Target: serverA                                
-                                                       
-         Start a PHP server to view output of the analysis tools        
-         =======================================================  -->    
+
+    <!-- =======================================================
+         Target: serverA
+
+         Start a PHP server to view output of the analysis tools
+         =======================================================  -->
     <target name="serverA" description="Start a PHP server to view analysis outputs">
     	<echo message="View the output at http://localhost:8000 " />
     	<echo message="Press Ctrl-C to quit" />
