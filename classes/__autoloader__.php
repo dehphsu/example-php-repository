@@ -1,7 +1,7 @@
 <?php
-
-function autoLoader($className)
+function examplePhpRepositoryAutoLoader($className)
 {
+
     $className = ltrim($className, '\\');
     $fileName  = '';
     $namespace = '';
@@ -12,7 +12,10 @@ function autoLoader($className)
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
-    require_once $fileName;
+    if (stream_resolve_include_path($fileName)) {
+        require_once $fileName;
+    }
+
 }
 
-spl_autoload_register('autoLoader');
+spl_autoload_register('examplePhpRepositoryAutoLoader');

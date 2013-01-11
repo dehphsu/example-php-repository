@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="Fairpoint Coding Standard">
-    <description>Fairpoint Coding Standard</description>
+<ruleset name="Example Coding Standard">
+    <description>Example Coding Standard</description>
     <exclude-pattern>*/tests/*</exclude-pattern>
 
     <rule ref="PSR2"/>
@@ -11,6 +11,6 @@
             <property name="absoluteLineLimit" value="140" />
         </properties>
     </rule>
-    
+
     <rule ref="Generic.PHP.DeprecatedFunctions" />
 </ruleset>

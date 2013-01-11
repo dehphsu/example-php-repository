@@ -28,7 +28,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers Example::setIntNumberOne
+     * @covers examplePhpRepository\Example::setIntNumberOne
      */
     public function testSetIntNumberOne()
     {
@@ -36,5 +36,6 @@ class ExampleTest extends PHPUnit_Framework_TestCase
 
         $this->object->setIntNumberOne(1);
         $this->assertEquals(1, $this->object->intNumberOne);
+
     }
 }
