@@ -149,6 +149,8 @@
          and CSS files and detects violations of a
          defined set of coding standards.
          Human readable output
+         
+         http://pear.php.net/package/PHP_CodeSniffer/redirected
          =======================================================  -->
     <target name="phpcs"
         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
