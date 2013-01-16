@@ -8,6 +8,16 @@ Fork the project and try it our for yourself.
 Dependancies
 ------------
 
+[PHP Unit Testing](https://github.com/sebastianbergmann/phpunit/)
+[Copy/Paste Detector (CPD)](https://github.com/sebastianbergmann/phpcpd)
+[PHP Mess Detector](http://phpmd.org/)
+[PHPLOC](https://github.com/sebastianbergmann/phploc)
+[PHP CodeSniffer](http://pear.php.net/package/PHP_CodeSniffer/redirected)
+[phpDocumentor](http://www.phpdoc.org/)
+[PHP_CodeBrowser](https://github.com/Mayflower/PHP_CodeBrowser)
+[PHP_Depend](http://pdepend.org/)
+[PHP](http://www.php.net)
+
 Usage
 -----
 
