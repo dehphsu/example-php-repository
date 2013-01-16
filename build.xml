@@ -16,7 +16,8 @@
 
 	<!-- Any bits of code to be excluded from code sniffing, depend.
 	     Maybe 3rd party libs that would cause your code to fail -->
-	<property name="3rdPartyLibs" value="${basedir}/classes/3rdParty" />
+	<!-- I am assuming that the layout is classes/vendor -->
+	<property name="3rdPartyLibs" value="vendor" />
 
     <!-- The name of the php codesniffer standard or the location of the ruleset.xml to use -->
     <property name="CodeSnifferStandard" value="ruleset.xml" />
@@ -24,7 +25,7 @@
     <!-- =======================================================
          (DEFAULT) Target: build
          =======================================================  -->
-    <target name="build" depends="clean,prepare,parallelTasks,phpunit,phpcb,phpcpd" />
+    <target name="build" depends="lint,clean,prepare,parallelTasks,phpunit,phpcb,phpcpd" />
 
     <!-- =======================================================
          Target: clean
@@ -62,7 +63,7 @@
         <phpcpd>
             <fileset dir="${httpdocs}" />
             <fileset dir="${classes}">
-            	<exclude name="3rdPartyLibs/" />
+                <exclude name="**/${3rdPartyLibs}/" />
             </fileset>
             <formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml" />
         </phpcpd>
@@ -86,13 +87,12 @@
     <target name="parallelTasks"
         description="Run the phpmd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
         <parallel threadCount="2">
-            <phingcall target="lint" />
             <phingcall target="phpdepend" />
             <phingcall target="phpmd" />
             <phingcall target="phpcpd" />
             <phingcall target="phpcs-ci" />
             <phingcall target="phpdoc" />
-            <phingcall target="phploc" />
+            <phingcall target="phploc-ci" />
         </parallel>
     </target>
 
@@ -105,10 +105,27 @@
     <target name="phpmd" description="Generate pmd.xml using PHPMD">
         <phpmd rulesets="codesize,design,naming,unusedcode">
             <fileset dir="${httpdocs}" />
-            <fileset dir="${classes}" />
+            <fileset dir="${classes}">
+                <exclude name="**/${3rdPartyLibs}/" />
+            </fileset>
             <formatter type="xml" outfile="${builddir}/logs/pmd.xml" />
         </phpmd>
     </target>
+
+    <!-- ==================================================================
+         Target: phploc-ci
+
+         A tool for quickly measuring the size of a PHP project
+         https://github.com/sebastianbergmann/phploc
+         ==================================================================  -->
+	<target name="phploc-ci" description="Measures the size of the project and count it's tests. Generates phploc.csv">
+	  <phploc countTests="true" reportType="csv" reportDirectory="${builddir}/logs/" reportName="phploc">
+        <fileset dir="${httpdocs}" />
+        <fileset dir="${classes}">
+            <exclude name="**/${3rdPartyLibs}/" />
+        </fileset>
+	  </phploc>
+	</target>
 
     <!-- ==================================================================
          Target: phploc
@@ -116,10 +133,15 @@
          A tool for quickly measuring the size of a PHP project
          https://github.com/sebastianbergmann/phploc
          ==================================================================  -->
-    <target name="phploc" description="Generate phploc.csv">
-        <exec command="phploc --log-csv ${builddir}/logs/phploc.csv ${httpdocs}" />
-    </target>
-
+	<target name="phploc" description="Measures the size of the project and count it's tests. Human reabable output">
+	  <phploc countTests="true" reportType="cli">
+        <fileset dir="${httpdocs}" />
+        <fileset dir="${classes}">
+            <exclude name="**/${3rdPartyLibs}/" />
+        </fileset>
+	  </phploc>
+	</target>
+	
     <!-- =======================================================
          Target: phpcs
 
@@ -132,7 +154,9 @@
         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <phpcodesniffer standard="${CodeSnifferStandard}">
             <fileset dir="${httpdocs}" />
-            <fileset dir="${classes}" />
+            <fileset dir="${classes}">
+                <exclude name="**/${3rdPartyLibs}/" />
+            </fileset>
         </phpcodesniffer>
     </target>
 
@@ -148,7 +172,9 @@
         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
         <phpcodesniffer standard="${CodeSnifferStandard}" reportWidth="114">
             <fileset dir="${httpdocs}" />
-            <fileset dir="${classes}" />
+            <fileset dir="${classes}">
+                <exclude name="**/${3rdPartyLibs}/" />
+            </fileset>
             <formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml" />
             <formatter type="full" outfile="${builddir}/logs/full.txt" />
         </phpcodesniffer>
@@ -164,7 +190,9 @@
     <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
         <phpdoc2 destdir="${builddir}/api">
             <fileset dir="${httpdocs}" />
-            <fileset dir="${classes}" />
+            <fileset dir="${classes}">
+                <exclude name="**/${3rdPartyLibs}/" />
+            </fileset>
         </phpdoc2>
     </target>
 
@@ -199,7 +227,9 @@
     <target name="phpdepend" description="Calculate software metrics using PHP_Depend">
         <phpdepend>
             <fileset dir="${httpdocs}" />
-            <fileset dir="${classes}" />
+            <fileset dir="${classes}">
+                <exclude name="**/${3rdPartyLibs}/" />
+            </fileset>
             <logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
             <logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
             <logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
@@ -219,6 +249,7 @@
             </fileset>
             <fileset dir="${classes}">
                 <include name="**/*.php" />
+            	<exclude name="**/${3rdPartyLibs}/" />
             </fileset>
         </phplint>
     </target>
@@ -246,18 +277,18 @@
 
          Start a PHP server to view the code
          =======================================================  -->
-    <target name="server" description="Start a PHP server to view the outputs">
+    <target name="server" description="Start a PHP server to view the code">
     	<echo message="View the output at http://localhost:8000 " />
     	<echo message="Press Ctrl-C to quit" />
         <exec command="php -S localhost:8000 -t ${httpdocs} " />
     </target>
 
     <!-- =======================================================
-         Target: serverA
+         Target: analysis
 
          Start a PHP server to view output of the analysis tools
          =======================================================  -->
-    <target name="serverA" description="Start a PHP server to view analysis outputs">
+    <target name="analysis" description="Start a PHP server to view analysis output">
     	<echo message="View the output at http://localhost:8000 " />
     	<echo message="Press Ctrl-C to quit" />
         <exec command="php -S localhost:8000 -t ${builddir} ${builddir}/router.php" />
